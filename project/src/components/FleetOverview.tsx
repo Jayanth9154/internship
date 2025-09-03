@@ -4,17 +4,17 @@ import { Car, Truck, Clock, Zap, TrendingUp, MapPin, Fuel, Users } from 'lucide-
 const FleetOverview: React.FC = () => {
   const stats = [
     { label: 'Active Vehicles', value: '247', icon: Car, change: '+12%', trend: 'up' },
-    { label: 'Total Distance', value: '45,832 km', icon: MapPin, change: '+8%', trend: 'up' },
+    { label: 'Total Distance', value: '73,742 km', icon: MapPin, change: '+8%', trend: 'up' },
     { label: 'Fuel Efficiency', value: '92%', icon: Fuel, change: '+5%', trend: 'up' },
     { label: 'Active Drivers', value: '89', icon: Users, change: '-2%', trend: 'down' },
   ];
 
   const vehicles = [
-    { id: 'FL-001', type: 'Delivery Van', status: 'En Route', location: 'Downtown', battery: 85, driver: 'John Smith' },
-    { id: 'FL-002', type: 'Cargo Truck', status: 'Loading', location: 'Warehouse A', battery: 92, driver: 'Sarah Johnson' },
-    { id: 'FL-003', type: 'Pickup Truck', status: 'Available', location: 'Base Station', battery: 100, driver: 'Mike Wilson' },
-    { id: 'FL-004', type: 'Delivery Van', status: 'En Route', location: 'Suburb East', battery: 67, driver: 'Emily Brown' },
-    { id: 'FL-005', type: 'Cargo Truck', status: 'Maintenance', location: 'Service Center', battery: 0, driver: 'David Lee' },
+    { id: 'FL-001', type: 'Delivery Van', status: 'En Route', location: 'Connaught Place', battery: 85, driver: 'Rajesh Kumar' },
+    { id: 'FL-002', type: 'Cargo Truck', status: 'Loading', location: 'Gurgaon Hub', battery: 92, driver: 'Priya Sharma' },
+    { id: 'FL-003', type: 'Pickup Truck', status: 'Available', location: 'Noida Depot', battery: 100, driver: 'Amit Singh' },
+    { id: 'FL-004', type: 'Delivery Van', status: 'En Route', location: 'Bangalore Tech Park', battery: 67, driver: 'Sneha Patel' },
+    { id: 'FL-005', type: 'Cargo Truck', status: 'Maintenance', location: 'Mumbai Service Center', battery: 0, driver: 'Vikram Reddy' },
   ];
 
   const getStatusColor = (status: string) => {

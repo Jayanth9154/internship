@@ -3,15 +3,15 @@ import { MapPin, Navigation, Clock, Car, Truck, AlertCircle } from 'lucide-react
 
 const VehicleMap: React.FC = () => {
   const vehicles = [
-    { id: 'FL-001', type: 'van', lat: 40.7128, lng: -74.0060, status: 'moving', speed: '45 km/h', destination: 'Manhattan Plaza' },
-    { id: 'FL-002', type: 'truck', lat: 40.7589, lng: -73.9851, status: 'stopped', speed: '0 km/h', destination: 'Central Park Delivery' },
-    { id: 'FL-003', type: 'van', lat: 40.6892, lng: -74.0445, status: 'moving', speed: '32 km/h', destination: 'Brooklyn Heights' },
-    { id: 'FL-004', type: 'truck', lat: 40.7831, lng: -73.9712, status: 'loading', speed: '0 km/h', destination: 'Warehouse District' },
+    { id: 'FL-001', type: 'van', lat: 28.6139, lng: 77.2090, status: 'moving', speed: '45 km/h', destination: 'Connaught Place' },
+    { id: 'FL-002', type: 'truck', lat: 28.4595, lng: 77.0266, status: 'stopped', speed: '0 km/h', destination: 'Gurgaon Cyber City' },
+    { id: 'FL-003', type: 'van', lat: 28.5355, lng: 77.3910, status: 'moving', speed: '32 km/h', destination: 'Noida Sector 62' },
+    { id: 'FL-004', type: 'truck', lat: 12.9716, lng: 77.5946, status: 'loading', speed: '0 km/h', destination: 'Bangalore Whitefield' },
   ];
 
   const alerts = [
-    { id: 1, type: 'traffic', message: 'Heavy traffic on Route 95', severity: 'warning' },
-    { id: 2, type: 'weather', message: 'Rain expected in downtown area', severity: 'info' },
+    { id: 1, type: 'traffic', message: 'Heavy traffic on Delhi-Gurgaon Expressway', severity: 'warning' },
+    { id: 2, type: 'weather', message: 'Monsoon expected in Mumbai region', severity: 'info' },
     { id: 3, type: 'maintenance', message: 'FL-005 requires immediate service', severity: 'error' },
   ];
 

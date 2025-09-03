@@ -3,25 +3,25 @@ import { BarChart3, TrendingUp, DollarSign, Clock, Fuel, Car, Users, MapPin } fr
 
 const Analytics: React.FC = () => {
   const kpis = [
-    { label: 'Monthly Revenue', value: '$284,590', change: '+12.5%', trend: 'up', icon: DollarSign },
+    { label: 'Monthly Revenue', value: '₹2,37,85,000', change: '+12.5%', trend: 'up', icon: DollarSign },
     { label: 'Fleet Utilization', value: '87.3%', change: '+5.2%', trend: 'up', icon: Car },
-    { label: 'Fuel Costs', value: '$45,230', change: '-8.1%', trend: 'down', icon: Fuel },
+    { label: 'Fuel Costs', value: '₹37,85,000', change: '-8.1%', trend: 'down', icon: Fuel },
     { label: 'Driver Efficiency', value: '94.6%', change: '+3.7%', trend: 'up', icon: Users },
   ];
 
   const chartData = [
-    { month: 'Jan', revenue: 245000, costs: 180000 },
-    { month: 'Feb', revenue: 258000, costs: 175000 },
-    { month: 'Mar', revenue: 267000, costs: 182000 },
-    { month: 'Apr', revenue: 275000, costs: 178000 },
-    { month: 'May', revenue: 284590, costs: 165000 },
+    { month: 'Jan', revenue: 20500000, costs: 15000000 },
+    { month: 'Feb', revenue: 21600000, costs: 14600000 },
+    { month: 'Mar', revenue: 22300000, costs: 15200000 },
+    { month: 'Apr', revenue: 23000000, costs: 14900000 },
+    { month: 'May', revenue: 23785000, costs: 13800000 },
   ];
 
   const fleetMetrics = [
-    { vehicle: 'Delivery Vans', count: 45, utilization: 89, avgDistance: '125 km', efficiency: 92 },
-    { vehicle: 'Cargo Trucks', count: 28, utilization: 85, avgDistance: '180 km', efficiency: 88 },
-    { vehicle: 'Pickup Trucks', count: 15, utilization: 91, avgDistance: '95 km', efficiency: 95 },
-    { vehicle: 'Electric Vans', count: 8, utilization: 76, avgDistance: '110 km', efficiency: 98 },
+    { vehicle: 'Delivery Vans', count: 45, utilization: 89, avgDistance: '85 km', efficiency: 92 },
+    { vehicle: 'Cargo Trucks', count: 28, utilization: 85, avgDistance: '120 km', efficiency: 88 },
+    { vehicle: 'Pickup Trucks', count: 15, utilization: 91, avgDistance: '65 km', efficiency: 95 },
+    { vehicle: 'Electric Vans', count: 8, utilization: 76, avgDistance: '75 km', efficiency: 98 },
   ];
 
   return (
@@ -83,8 +83,8 @@ const Analytics: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-medium text-green-600">${(data.revenue / 1000).toFixed(0)}k</div>
-                    <div className="text-xs text-red-600">${(data.costs / 1000).toFixed(0)}k</div>
+                    <div className="text-sm font-medium text-green-600">₹{(data.revenue / 100000).toFixed(0)}L</div>
+                    <div className="text-xs text-red-600">₹{(data.costs / 100000).toFixed(0)}L</div>
                   </div>
                 </div>
               ))}
@@ -163,9 +163,9 @@ const Analytics: React.FC = () => {
               <h4 className="font-medium text-gray-900">Peak Hours Analysis</h4>
             </div>
             <p className="text-sm text-gray-600 mb-3">
-              Highest demand between 2-4 PM. Consider deploying 15% more vehicles during these hours.
+              Highest demand between 2-4 PM in Delhi NCR. Consider deploying 15% more vehicles during these hours.
             </p>
-            <div className="text-xs text-gray-500">Potential revenue increase: +$12,500/month</div>
+            <div className="text-xs text-gray-500">Potential revenue increase: +₹10,50,000/month</div>
           </div>
 
           <div className="bg-white/70 rounded-xl p-6">
@@ -174,7 +174,7 @@ const Analytics: React.FC = () => {
               <h4 className="font-medium text-gray-900">Fuel Optimization</h4>
             </div>
             <p className="text-sm text-gray-600 mb-3">
-              Switch 8 more vehicles to electric. Estimated annual savings of $18,400 in fuel costs.
+              Switch 8 more vehicles to electric. Estimated annual savings of ₹15,40,000 in fuel costs.
             </p>
             <div className="text-xs text-gray-500">ROI payback period: 2.3 years</div>
           </div>
@@ -185,7 +185,7 @@ const Analytics: React.FC = () => {
               <h4 className="font-medium text-gray-900">Route Density</h4>
             </div>
             <p className="text-sm text-gray-600 mb-3">
-              North district shows 40% higher demand. Consider opening a satellite depot there.
+              Gurgaon district shows 40% higher demand. Consider opening a satellite depot there.
             </p>
             <div className="text-xs text-gray-500">Estimated delivery time reduction: 25%</div>
           </div>

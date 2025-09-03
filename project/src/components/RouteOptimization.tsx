@@ -5,32 +5,32 @@ const RouteOptimization: React.FC = () => {
   const optimizedRoutes = [
     {
       id: 'RT-001',
-      origin: 'Central Warehouse',
-      destination: 'Downtown Hub',
+      origin: 'Delhi Central Warehouse',
+      destination: 'Connaught Place Hub',
       aiSavings: '23%',
       timeSaved: '15 min',
       fuelSaved: '3.2L',
-      distance: '28.5 km',
+      distance: '18.5 km',
       status: 'Active'
     },
     {
       id: 'RT-002',
-      origin: 'Distribution Center A',
-      destination: 'Suburban Mall',
+      origin: 'Gurgaon Distribution Center',
+      destination: 'DLF Mall',
       aiSavings: '18%',
       timeSaved: '12 min',
       fuelSaved: '2.8L',
-      distance: '35.2 km',
+      distance: '25.2 km',
       status: 'Optimizing'
     },
     {
       id: 'RT-003',
-      origin: 'North Terminal',
-      destination: 'Industrial Zone',
+      origin: 'Noida Terminal',
+      destination: 'Greater Noida Industrial Zone',
       aiSavings: '31%',
       timeSaved: '22 min',
       fuelSaved: '4.1L',
-      distance: '42.8 km',
+      distance: '32.8 km',
       status: 'Completed'
     },
   ];
@@ -193,17 +193,17 @@ const RouteOptimization: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-red-600">45.2 km</div>
+                <div className="text-2xl font-bold text-red-600">35.2 km</div>
                 <div className="text-sm text-gray-600 mb-2">Traditional Distance</div>
                 <div className="h-2 bg-red-200 rounded"></div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">32.8 km</div>
+                <div className="text-2xl font-bold text-purple-600">25.8 km</div>
                 <div className="text-sm text-gray-600 mb-2">AI-Optimized Distance</div>
                 <div className="h-2 bg-gradient-to-r from-purple-400 to-teal-400 rounded"></div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">27%</div>
+                <div className="text-2xl font-bold text-green-600">26%</div>
                 <div className="text-sm text-gray-600">Savings</div>
               </div>
             </div>
