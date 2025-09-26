@@ -2,11 +2,19 @@ package com.neurofleetx.config;
 
 import com.neurofleetx.model.Route;
 import com.neurofleetx.model.Vehicle;
+import com.neurofleetx.model.User;
+import com.neurofleetx.model.Booking;
+import com.neurofleetx.model.Trip;
 import com.neurofleetx.repository.RouteRepository;
 import com.neurofleetx.repository.VehicleRepository;
+import com.neurofleetx.repository.UserRepository;
+import com.neurofleetx.repository.BookingRepository;
+import com.neurofleetx.repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -17,8 +25,25 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private RouteRepository routeRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private TripRepository tripRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void run(String... args) throws Exception {
+        // Initialize sample users if database is empty
+        if (userRepository.count() == 0) {
+            initializeUsers();
+        }
+
         // Initialize sample vehicles if database is empty
         if (vehicleRepository.count() == 0) {
             initializeVehicles();
@@ -28,6 +53,29 @@ public class DataInitializer implements CommandLineRunner {
         if (routeRepository.count() == 0) {
             initializeRoutes();
         }
+
+        // Initialize sample bookings and trips
+        if (bookingRepository.count() == 0) {
+            initializeBookingsAndTrips();
+        }
+    }
+
+    private void initializeUsers() {
+        // Fleet Manager
+        User fleetManager = new User("Admin", "Manager", "admin@neurofleetx.com", 
+                                   "NeuroFleetX Corp", passwordEncoder.encode("password123"), "fleet_manager");
+        fleetManager.setRole(User.Role.ADMIN);
+        userRepository.save(fleetManager);
+
+        // Customer
+        User customer = new User("John", "Doe", "customer@techsolutions.com", 
+                               "Tech Solutions Ltd", passwordEncoder.encode("password123"), "customer");
+        userRepository.save(customer);
+
+        // Driver
+        User driver = new User("Rajesh", "Kumar", "driver@neurofleetx.com", 
+                             "NeuroFleetX Corp", passwordEncoder.encode("password123"), "driver");
+        userRepository.save(driver);
     }
 
     private void initializeVehicles() {
@@ -99,5 +147,36 @@ public class DataInitializer implements CommandLineRunner {
         routeRepository.save(route1);
         routeRepository.save(route2);
         routeRepository.save(route3);
+    }
+
+    private void initializeBookingsAndTrips() {
+        User customer = userRepository.findByEmail("customer@techsolutions.com").orElse(null);
+        User driver = userRepository.findByEmail("driver@neurofleetx.com").orElse(null);
+        Vehicle vehicle = vehicleRepository.findByVehicleId("FL-001").orElse(null);
+
+        if (customer != null && driver != null && vehicle != null) {
+            // Sample Booking
+            Booking booking1 = new Booking("BK-001", customer, "Delhi Central Warehouse", 
+                                         "Connaught Place Hub", 18.5, 1500.0);
+            booking1.setDriver(driver);
+            booking1.setVehicle(vehicle);
+            booking1.setStatus(Booking.BookingStatus.IN_TRANSIT);
+            booking1.setProgress(65);
+            booking1.setPickupTime(LocalDateTime.now().minusHours(1));
+            booking1.setEstimatedDelivery(LocalDateTime.now().plusMinutes(25));
+            bookingRepository.save(booking1);
+
+            // Sample Trip
+            Trip trip1 = new Trip("TR-001", driver, vehicle, "Delhi Central Warehouse", 
+                                "Connaught Place Hub", 18.5, 850.0);
+            trip1.setBooking(booking1);
+            trip1.setStatus(Trip.TripStatus.IN_PROGRESS);
+            trip1.setProgress(65);
+            trip1.setStartTime(LocalDateTime.now().minusHours(1));
+            trip1.setEstimatedCompletion(LocalDateTime.now().plusMinutes(25));
+            trip1.setCustomerName("John Doe");
+            trip1.setCustomerPhone("+91 98765 43210");
+            tripRepository.save(trip1);
+        }
     }
 }

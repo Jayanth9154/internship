@@ -36,6 +36,10 @@ public class User {
     @Size(min = 6, max = 120)
     private String password;
 
+    @NotBlank
+    @Size(max = 20)
+    private String userType; // customer, driver, fleet_manager
+
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
@@ -48,12 +52,13 @@ public class User {
     // Constructors
     public User() {}
 
-    public User(String firstName, String lastName, String email, String company, String password) {
+    public User(String firstName, String lastName, String email, String company, String password, String userType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.company = company;
         this.password = password;
+        this.userType = userType;
     }
 
     // Getters and Setters
@@ -74,6 +79,9 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getUserType() { return userType; }
+    public void setUserType(String userType) { this.userType = userType; }
 
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }

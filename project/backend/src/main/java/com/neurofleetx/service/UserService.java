@@ -28,7 +28,8 @@ public class UserService {
             registerRequest.getLastName(),
             registerRequest.getEmail(),
             registerRequest.getCompany(),
-            passwordEncoder.encode(registerRequest.getPassword())
+            passwordEncoder.encode(registerRequest.getPassword()),
+            registerRequest.getUserType()
         );
 
         return userRepository.save(user);

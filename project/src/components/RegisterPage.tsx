@@ -12,6 +12,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister, onSwitchToLogin
     lastName: '',
     email: '',
     company: '',
+    userType: 'customer',
     password: '',
     confirmPassword: ''
   });
@@ -121,6 +122,23 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister, onSwitchToLogin
 
               <div>
                 <label className="block text-gray-300 text-sm font-medium mb-2">
+                  User Type
+                </label>
+                <select
+                  name="userType"
+                  value={formData.userType}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/50 transition-all"
+                  required
+                >
+                  <option value="customer" className="bg-gray-800 text-white">Customer</option>
+                  <option value="driver" className="bg-gray-800 text-white">Driver</option>
+                  <option value="fleet_manager" className="bg-gray-800 text-white">Fleet Manager</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
                   Company Name
                 </label>
                 <div className="relative">
@@ -131,7 +149,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister, onSwitchToLogin
                     value={formData.company}
                     onChange={handleChange}
                     className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/50 transition-all"
-                    placeholder="Your Company Ltd."
+                    placeholder={formData.userType === 'driver' ? 'Current Employer (Optional)' : 'Your Company Ltd.'}
                     required
                   />
                 </div>

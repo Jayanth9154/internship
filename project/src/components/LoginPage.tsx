@@ -12,7 +12,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToRegister }) =>
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin();
+    // For demo purposes, determine user type based on email
+    if (email.includes('customer')) {
+      (onLogin as any)('customer');
+    } else if (email.includes('driver')) {
+      (onLogin as any)('driver');
+    } else {
+      (onLogin as any)('fleet_manager');
+    }
   };
 
   return (

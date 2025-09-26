@@ -8,14 +8,16 @@ public class JwtResponse {
     private String firstName;
     private String lastName;
     private String company;
+    private String userType;
 
-    public JwtResponse(String accessToken, Long id, String email, String firstName, String lastName, String company) {
+    public JwtResponse(String accessToken, Long id, String email, String firstName, String lastName, String company, String userType) {
         this.token = accessToken;
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.company = company;
+        this.userType = userType;
     }
 
     // Getters and Setters
@@ -39,4 +41,7 @@ public class JwtResponse {
 
     public String getCompany() { return company; }
     public void setCompany(String company) { this.company = company; }
+
+    public String getUserType() { return userType; }
+    public void setUserType(String userType) { this.userType = userType; }
 }

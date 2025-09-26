@@ -42,7 +42,7 @@ public class AuthController {
         userService.updateLastLogin(loginRequest.getEmail());
 
         return ResponseEntity.ok(new JwtResponse(jwt, user.getId(), user.getEmail(), 
-                                               user.getFirstName(), user.getLastName(), user.getCompany()));
+                                               user.getFirstName(), user.getLastName(), user.getCompany(), user.getUserType()));
     }
 
     @PostMapping("/signup")
