@@ -79,50 +79,96 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initializeVehicles() {
-        Vehicle van1 = new Vehicle("FL-001", "Delivery Van", "Tata Ace", 
+        User driver = userRepository.findByEmail("driver@neurofleetx.com").orElse(null);
+        
+        Vehicle van1 = new Vehicle("FL-001", "Delivery Van", "Tata Ace", 1500, "Diesel",
                                   Vehicle.VehicleStatus.EN_ROUTE, 28.6139, 77.2090);
         van1.setCurrentLocation("Connaught Place");
         van1.setDestination("Khan Market");
         van1.setBatteryLevel(85);
         van1.setSpeed(45.0);
         van1.setDriverName("Rajesh Kumar");
-        van1.setCapacity(1500);
+        van1.setLicensePlate("DL-01-AB-1234");
+        van1.setYear(2022);
+        van1.setManufacturer("Tata Motors");
+        van1.setMileage(15.5);
         van1.setIsElectric(false);
+        van1.setFuelLevel(78.0);
+        van1.setAssignedDriver(driver);
 
-        Vehicle truck1 = new Vehicle("FL-002", "Cargo Truck", "Ashok Leyland", 
+        Vehicle truck1 = new Vehicle("FL-002", "Cargo Truck", "Ashok Leyland", 3000, "Diesel",
                                     Vehicle.VehicleStatus.LOADING, 28.4595, 77.0266);
         truck1.setCurrentLocation("Gurgaon Warehouse");
         truck1.setDestination("Cyber City");
         truck1.setBatteryLevel(92);
         truck1.setSpeed(0.0);
         truck1.setDriverName("Priya Sharma");
-        truck1.setCapacity(3000);
+        truck1.setLicensePlate("HR-26-CD-5678");
+        truck1.setYear(2021);
+        truck1.setManufacturer("Ashok Leyland");
+        truck1.setMileage(8.2);
         truck1.setIsElectric(false);
+        truck1.setFuelLevel(85.0);
 
-        Vehicle van2 = new Vehicle("FL-003", "Pickup Truck", "Mahindra Bolero", 
+        Vehicle van2 = new Vehicle("FL-003", "Pickup Truck", "Mahindra Bolero", 1000, "Diesel",
                                   Vehicle.VehicleStatus.AVAILABLE, 28.5355, 77.3910);
         van2.setCurrentLocation("Noida Base Station");
         van2.setDestination("Greater Noida");
         van2.setBatteryLevel(100);
         van2.setSpeed(0.0);
         van2.setDriverName("Amit Singh");
-        van2.setCapacity(1000);
+        van2.setLicensePlate("UP-16-EF-9012");
+        van2.setYear(2023);
+        van2.setManufacturer("Mahindra");
+        van2.setMileage(12.8);
         van2.setIsElectric(false);
+        van2.setFuelLevel(95.0);
 
-        Vehicle electric1 = new Vehicle("FL-004", "Electric Van", "Tata Nexon EV", 
+        Vehicle electric1 = new Vehicle("FL-004", "Electric Van", "Tata Nexon EV", 1200, "Electric",
                                        Vehicle.VehicleStatus.EN_ROUTE, 12.9716, 77.5946);
         electric1.setCurrentLocation("Bangalore Electronic City");
         electric1.setDestination("Whitefield Tech Park");
         electric1.setBatteryLevel(67);
         electric1.setSpeed(32.0);
         electric1.setDriverName("Sneha Patel");
-        electric1.setCapacity(1200);
+        electric1.setLicensePlate("KA-03-GH-3456");
+        electric1.setYear(2023);
+        electric1.setManufacturer("Tata Motors");
+        electric1.setMileage(0.0); // Electric vehicles don't have traditional mileage
         electric1.setIsElectric(true);
+        electric1.setFuelLevel(0.0); // Electric vehicles don't have fuel
+
+        // Add more vehicles for better inventory
+        Vehicle van3 = new Vehicle("FL-005", "Delivery Van", "Maruti Suzuki Super Carry", 750, "CNG",
+                                  Vehicle.VehicleStatus.AVAILABLE, 19.0760, 72.8777);
+        van3.setCurrentLocation("Mumbai Central");
+        van3.setLicensePlate("MH-01-IJ-7890");
+        van3.setYear(2022);
+        van3.setManufacturer("Maruti Suzuki");
+        van3.setMileage(18.5);
+        van3.setIsElectric(false);
+        van3.setFuelLevel(90.0);
+        van3.setBatteryLevel(100);
+        van3.setSpeed(0.0);
+
+        Vehicle truck2 = new Vehicle("FL-006", "Heavy Truck", "Bharat Benz", 5000, "Diesel",
+                                    Vehicle.VehicleStatus.MAINTENANCE, 22.5726, 88.3639);
+        truck2.setCurrentLocation("Kolkata Service Center");
+        truck2.setLicensePlate("WB-02-KL-2468");
+        truck2.setYear(2020);
+        truck2.setManufacturer("Daimler");
+        truck2.setMileage(6.5);
+        truck2.setIsElectric(false);
+        truck2.setFuelLevel(45.0);
+        truck2.setBatteryLevel(88);
+        truck2.setSpeed(0.0);
 
         vehicleRepository.save(van1);
         vehicleRepository.save(truck1);
         vehicleRepository.save(van2);
         vehicleRepository.save(electric1);
+        vehicleRepository.save(van3);
+        vehicleRepository.save(truck2);
     }
 
     private void initializeRoutes() {

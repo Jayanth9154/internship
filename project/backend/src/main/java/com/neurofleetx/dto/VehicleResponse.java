@@ -1,79 +1,68 @@
-package com.neurofleetx.model;
+package com.neurofleetx.dto;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.neurofleetx.model.Vehicle;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "vehicles")
-public class Vehicle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class VehicleResponse {
     private Long id;
-
-    @NotBlank
-    @Column(unique = true)
     private String vehicleId;
-
-    @NotBlank
     private String type;
-
-    @NotBlank
     private String model;
-
-    @NotNull
     private Integer capacity;
-
-    @NotBlank
     private String fuelType;
-
     private String licensePlate;
     private Integer year;
     private String manufacturer;
     private Double mileage;
-    private LocalDateTime lastServiceDate;
-    private LocalDateTime nextServiceDate;
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private VehicleStatus status;
-
-    @NotNull
+    private String status;
     private Double latitude;
-
-    @NotNull
     private Double longitude;
-
     private String currentLocation;
     private String destination;
     private Integer batteryLevel;
     private Double speed;
     private String driverName;
     private Double fuelLevel;
-    private Boolean isElectric = false;
+    private Boolean isElectric;
+    private String assignedDriverName;
+    private Long assignedDriverId;
+    private LocalDateTime lastServiceDate;
+    private LocalDateTime nextServiceDate;
+    private LocalDateTime lastUpdated;
+    private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_driver_id")
-    private User assignedDriver;
-    @Column(name = "last_updated")
-    private LocalDateTime lastUpdated = LocalDateTime.now();
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    // Constructors
-    public Vehicle() {}
-
-    public Vehicle(String vehicleId, String type, String model, Integer capacity, 
-                   String fuelType, VehicleStatus status, Double latitude, Double longitude) {
-        this.vehicleId = vehicleId;
-        this.type = type;
-        this.model = model;
-        this.capacity = capacity;
-        this.fuelType = fuelType;
-        this.status = status;
-        this.latitude = latitude;
-        this.longitude = longitude;
+    // Constructor from Vehicle entity
+    public VehicleResponse(Vehicle vehicle) {
+        this.id = vehicle.getId();
+        this.vehicleId = vehicle.getVehicleId();
+        this.type = vehicle.getType();
+        this.model = vehicle.getModel();
+        this.capacity = vehicle.getCapacity();
+        this.fuelType = vehicle.getFuelType();
+        this.licensePlate = vehicle.getLicensePlate();
+        this.year = vehicle.getYear();
+        this.manufacturer = vehicle.getManufacturer();
+        this.mileage = vehicle.getMileage();
+        this.status = vehicle.getStatus().name();
+        this.latitude = vehicle.getLatitude();
+        this.longitude = vehicle.getLongitude();
+        this.currentLocation = vehicle.getCurrentLocation();
+        this.destination = vehicle.getDestination();
+        this.batteryLevel = vehicle.getBatteryLevel();
+        this.speed = vehicle.getSpeed();
+        this.driverName = vehicle.getDriverName();
+        this.fuelLevel = vehicle.getFuelLevel();
+        this.isElectric = vehicle.getIsElectric();
+        this.lastServiceDate = vehicle.getLastServiceDate();
+        this.nextServiceDate = vehicle.getNextServiceDate();
+        this.lastUpdated = vehicle.getLastUpdated();
+        this.createdAt = vehicle.getCreatedAt();
+        
+        if (vehicle.getAssignedDriver() != null) {
+            this.assignedDriverName = vehicle.getAssignedDriver().getFirstName() + " " + 
+                                    vehicle.getAssignedDriver().getLastName();
+            this.assignedDriverId = vehicle.getAssignedDriver().getId();
+        }
     }
 
     // Getters and Setters
@@ -107,13 +96,8 @@ public class Vehicle {
     public Double getMileage() { return mileage; }
     public void setMileage(Double mileage) { this.mileage = mileage; }
 
-    public LocalDateTime getLastServiceDate() { return lastServiceDate; }
-    public void setLastServiceDate(LocalDateTime lastServiceDate) { this.lastServiceDate = lastServiceDate; }
-
-    public LocalDateTime getNextServiceDate() { return nextServiceDate; }
-    public void setNextServiceDate(LocalDateTime nextServiceDate) { this.nextServiceDate = nextServiceDate; }
-    public VehicleStatus getStatus() { return status; }
-    public void setStatus(VehicleStatus status) { this.status = status; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
     public Double getLatitude() { return latitude; }
     public void setLatitude(Double latitude) { this.latitude = latitude; }
@@ -139,19 +123,24 @@ public class Vehicle {
     public Double getFuelLevel() { return fuelLevel; }
     public void setFuelLevel(Double fuelLevel) { this.fuelLevel = fuelLevel; }
 
-
     public Boolean getIsElectric() { return isElectric; }
     public void setIsElectric(Boolean isElectric) { this.isElectric = isElectric; }
 
-    public User getAssignedDriver() { return assignedDriver; }
-    public void setAssignedDriver(User assignedDriver) { this.assignedDriver = assignedDriver; }
+    public String getAssignedDriverName() { return assignedDriverName; }
+    public void setAssignedDriverName(String assignedDriverName) { this.assignedDriverName = assignedDriverName; }
+
+    public Long getAssignedDriverId() { return assignedDriverId; }
+    public void setAssignedDriverId(Long assignedDriverId) { this.assignedDriverId = assignedDriverId; }
+
+    public LocalDateTime getLastServiceDate() { return lastServiceDate; }
+    public void setLastServiceDate(LocalDateTime lastServiceDate) { this.lastServiceDate = lastServiceDate; }
+
+    public LocalDateTime getNextServiceDate() { return nextServiceDate; }
+    public void setNextServiceDate(LocalDateTime nextServiceDate) { this.nextServiceDate = nextServiceDate; }
+
     public LocalDateTime getLastUpdated() { return lastUpdated; }
     public void setLastUpdated(LocalDateTime lastUpdated) { this.lastUpdated = lastUpdated; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public enum VehicleStatus {
-        AVAILABLE, EN_ROUTE, LOADING, MAINTENANCE, OFFLINE, OUT_OF_SERVICE
-    }
 }

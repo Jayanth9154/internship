@@ -4,6 +4,8 @@ import FleetOverview from './FleetOverview';
 import VehicleMap from './VehicleMap';
 import RouteOptimization from './RouteOptimization';
 import Analytics from './Analytics';
+import FleetInventory from './FleetInventory';
+import TelemetryDashboard from './TelemetryDashboard';
 
 interface DashboardProps {
   onLogout: () => void;
@@ -18,10 +20,14 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
         return <FleetOverview />;
       case 'map':
         return <VehicleMap />;
+      case 'telemetry':
+        return <TelemetryDashboard />;
       case 'routes':
         return <RouteOptimization />;
       case 'analytics':
         return <Analytics />;
+      case 'inventory':
+        return <FleetInventory />;
       default:
         return <FleetOverview />;
     }

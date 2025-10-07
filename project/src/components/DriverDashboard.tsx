@@ -1,5 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LogOut, Menu, Truck, MapPin, Clock, CheckCircle, AlertTriangle, Navigation, Fuel, User, Phone, Star, TrendingUp, DollarSign, Wrench, Battery, Thermometer, Gauge, MessageCircle, Bell, Route, Zap, Activity, Shield, Calendar, Target } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import L from 'leaflet';
+import { vehicleAPI, customerAPI } from '../services/api';
+import 'leaflet/dist/leaflet.css';
+
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 interface DriverDashboardProps {
   onLogout: () => void;
@@ -7,6 +18,20 @@ interface DriverDashboardProps {
 
 const DriverDashboard: React.FC<DriverDashboardProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('current');
+  const [assignedBookings, setAssignedBookings] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchAssignedBookings();
+  }, []);
+
+  const fetchAssignedBookings = async () => {
+    try {
+      const response = await customerAPI.getBookings();
+      setAssignedBookings(response.data);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+    }
+  };
 
   const tabs = [
     { id: 'current', label: 'Current Trip', icon: Navigation },
@@ -226,22 +251,49 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ onLogout }) => {
             {/* Real-time Navigation */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Real-Time Navigation</h3>
-              
-              {/* Map Placeholder */}
-              <div className="h-64 bg-gradient-to-br from-blue-100 to-green-100 rounded-xl mb-4 relative overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <Navigation className="w-12 h-12 text-blue-500 mx-auto mb-2 animate-pulse" />
-                    <p className="text-gray-700 font-medium">AI-Optimized Navigation</p>
-                    <p className="text-sm text-gray-500">Turn-by-turn directions with traffic updates</p>
-                  </div>
-                </div>
-                
-                {/* Simulated route */}
-                <div className="absolute top-1/4 left-1/4 w-1/2 h-0.5 bg-blue-500 opacity-60 transform rotate-45"></div>
-                <div className="absolute top-1/3 right-1/4 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
-                  <Truck className="w-3 h-3 text-white" />
-                </div>
+
+              <div className="h-64 rounded-xl mb-4 overflow-hidden">
+                <MapContainer
+                  center={[28.6139, 77.2090]}
+                  zoom={12}
+                  style={{ height: '100%', width: '100%' }}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  />
+
+                  <Marker position={[28.6139, 77.2090]}>
+                    <Popup>
+                      <div className="p-2">
+                        <div className="font-semibold text-gray-900 mb-1">Pickup: Delhi Central Warehouse</div>
+                        <div className="text-sm text-gray-600">Current location</div>
+                      </div>
+                    </Popup>
+                  </Marker>
+
+                  <Marker position={[28.6304, 77.2177]}>
+                    <Popup>
+                      <div className="p-2">
+                        <div className="font-semibold text-gray-900 mb-1">Delivery: Connaught Place Hub</div>
+                        <div className="text-sm text-gray-600">Destination</div>
+                      </div>
+                    </Popup>
+                  </Marker>
+
+                  <Polyline
+                    positions={[
+                      [28.6139, 77.2090],
+                      [28.6200, 77.2150],
+                      [28.6304, 77.2177]
+                    ]}
+                    pathOptions={{
+                      color: '#8b5cf6',
+                      weight: 4,
+                      opacity: 0.8
+                    }}
+                  />
+                </MapContainer>
               </div>
 
               {/* Traffic Alerts */}
@@ -270,6 +322,78 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ onLogout }) => {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Assigned Bookings */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Assigned Customer Bookings</h3>
+
+              {assignedBookings.length === 0 ? (
+                <div className="text-center py-8">
+                  <Truck className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-600">No bookings assigned yet</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {assignedBookings.map((booking) => (
+                    <div key={booking.id} className="border border-gray-200 rounded-xl p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-3">
+                          <MapPin className="w-5 h-5 text-purple-600" />
+                          <div>
+                            <div className="font-semibold text-gray-900">{booking.id}</div>
+                            <div className="text-sm text-gray-600">
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                booking.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                                booking.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800' :
+                                'bg-green-100 text-green-800'
+                              }`}>
+                                {booking.status}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm text-gray-600">Vehicle</div>
+                          <div className="font-medium text-gray-900">{booking.vehicleId}</div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                        <div>
+                          <div className="text-sm text-gray-600 mb-1">Pickup</div>
+                          <div className="font-medium text-gray-900">{booking.pickupLocation}</div>
+                        </div>
+                        <div>
+                          <div className="text-sm text-gray-600 mb-1">Delivery</div>
+                          <div className="font-medium text-gray-900">{booking.deliveryLocation}</div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-sm text-gray-600 mb-1">Scheduled Pickup</div>
+                          <div className="text-sm text-gray-900">
+                            {new Date(booking.scheduledPickupTime).toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-sm text-gray-600 mb-1">Cargo Weight</div>
+                          <div className="text-sm text-gray-900">{booking.cargoWeight}</div>
+                        </div>
+                      </div>
+
+                      {booking.notes && (
+                        <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                          <div className="text-sm text-blue-800">
+                            <strong>Notes:</strong> {booking.notes}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         );

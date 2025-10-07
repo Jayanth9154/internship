@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart3, TrendingUp, DollarSign, Clock, Fuel, Car, Users, MapPin } from 'lucide-react';
+import { BarChart3, TrendingUp, DollarSign, Clock, Fuel, Car, Users, MapPin, PieChart } from 'lucide-react';
 
 const Analytics: React.FC = () => {
   const kpis = [
@@ -24,6 +24,48 @@ const Analytics: React.FC = () => {
     { vehicle: 'Electric Vans', count: 8, utilization: 76, avgDistance: '75 km', efficiency: 98 },
   ];
 
+  const fleetComposition = [
+    { vehicle: 'Delivery Vans', count: 45, color: '#8b5cf6', percentage: 46.9 },
+    { vehicle: 'Cargo Trucks', count: 28, color: '#06b6d4', percentage: 29.2 },
+    { vehicle: 'Pickup Trucks', count: 15, color: '#10b981', percentage: 15.6 },
+    { vehicle: 'Electric Vans', count: 8, color: '#f59e0b', percentage: 8.3 },
+  ];
+
+  const totalVehicles = fleetComposition.reduce((sum, item) => sum + item.count, 0);
+
+  // Calculate cumulative percentages for pie chart segments
+  let cumulativePercentage = 0;
+  const pieSegments = fleetComposition.map(item => {
+    const startAngle = cumulativePercentage * 3.6; // Convert percentage to degrees
+    cumulativePercentage += item.percentage;
+    const endAngle = cumulativePercentage * 3.6;
+    return {
+      ...item,
+      startAngle,
+      endAngle,
+      path: createPieSlice(50, 50, 40, startAngle, endAngle)
+    };
+  });
+
+  function createPieSlice(cx, cy, radius, startAngle, endAngle) {
+    const start = polarToCartesian(cx, cy, radius, endAngle);
+    const end = polarToCartesian(cx, cy, radius, startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+    return [
+      "M", cx, cy,
+      "L", start.x, start.y,
+      "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y,
+      "Z"
+    ].join(" ");
+  }
+
+  function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+    const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+    return {
+      x: centerX + (radius * Math.cos(angleInRadians)),
+      y: centerY + (radius * Math.sin(angleInRadians))
+    };
+  }
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* KPI Cards */}
@@ -102,6 +144,57 @@ const Analytics: React.FC = () => {
           </div>
         </div>
 
+        {/* Fleet Composition Pie Chart */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
+          <div className="px-6 py-4 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">Fleet Composition</h3>
+              <PieChart className="w-5 h-5 text-gray-400" />
+            </div>
+          </div>
+          <div className="p-6">
+            <div className="flex items-center justify-center mb-6">
+              <div className="relative">
+                <svg width="200" height="200" viewBox="0 0 100 100" className="transform -rotate-90">
+                  {pieSegments.map((segment, index) => (
+                    <path
+                      key={index}
+                      d={segment.path}
+                      fill={segment.color}
+                      className="hover:opacity-80 transition-opacity cursor-pointer"
+                      stroke="white"
+                      strokeWidth="0.5"
+                    />
+                  ))}
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gray-900">{totalVehicles}</div>
+                    <div className="text-sm text-gray-600">Total Vehicles</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              {fleetComposition.map((item, index) => (
+                <div key={index} className="flex items-center space-x-3">
+                  <div 
+                    className="w-4 h-4 rounded-full"
+                    style={{ backgroundColor: item.color }}
+                  ></div>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-gray-900">{item.vehicle}</div>
+                    <div className="text-xs text-gray-600">{item.count} units ({item.percentage}%)</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 mt-8">
         {/* Fleet Performance */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
           <div className="px-6 py-4 border-b border-gray-100">
